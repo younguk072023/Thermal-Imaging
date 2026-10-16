@@ -1,15 +1,23 @@
 # 열영상 기반 근육 자극 부하 영역 탐지
 
-운동 중 촬영한 열영상에서 열 반응 영역을 찾기 위해 YOLOv5 객체 탐지 모델을 적용했습니다. 이 저장소에는 모델 학습과 탐지 결과 시각화에 사용한 Colab 노트북을 담았습니다.
+팔굽혀펴기 전후 열영상에서 근육 자극 부하와 관련된 열 반응 영역을 찾기 위해 YOLOv5 객체 탐지를 적용한 연구입니다. 2024 대한의료정보학회에서 발표한 **「YOLO 모델을 활용한 운동 중 근육 자극 부하 검출 시스템」**의 실험을 정리했습니다.
 
-## 주요 내용
+## 연구 방법
 
-- 열영상과 라벨 데이터를 준비해 사전학습 YOLOv5x 모델 학습
-- 검증·테스트 이미지에서 열 반응 영역 탐지
-- `CriticalHeat`, `ModerateHeat` 예측 영역을 바운딩 박스로 시각화
+- 좌우 흉부와 복부의 열영상 관심 영역을 분석하고, 열 반응 영역을 `CriticalHeat`와 `ModerateHeat`로 라벨링
+- 회전·반전·크기 조절로 증강한 이미지 **525장**을 학습 471장, 검증 27장, 시험 27장으로 사용
+- **YOLOv5s~YOLOv5x**(s, m, l, x)를 입력 크기 256×256, 배치 16, 100 epochs 조건에서 비교
+- Precision, Recall, mAP와 예측 바운딩 박스를 통해 모델별 탐지 결과 확인
 
-## 노트북
+## 주요 결과
 
-[Colab에서 열기](https://colab.research.google.com/github/younguk072023/Thermal-Imaging/blob/main/real_yolo5.ipynb) · [GitHub에서 코드 보기](real_yolo5.ipynb)
+학회 발표 자료 기준, **YOLOv5l**은 비교한 네 모델 중 Precision **0.806**, Recall **0.811**, mAP50 **0.803**으로 가장 높은 값을 보였습니다. YOLOv5s는 모델 크기가 작아 효율적인 선택지로 검토했습니다. 이 연구는 **2024 대한의료정보학회 우수포스터상**을 받았습니다.
 
-실행하려면 별도의 열영상 데이터셋(`data.zip`)이 필요합니다.
+## 코드와 발표 자료
+
+노트북은 네 모델을 같은 조건으로 학습하고, 검증셋에서 모델을 선택한 뒤 시험셋 평가와 탐지 결과 시각화를 수행하도록 정리했습니다.
+
+- [Colab 노트북 실행](https://colab.research.google.com/github/younguk072023/Thermal-Imaging/blob/main/real_yolo5.ipynb) · [GitHub에서 코드 보기](real_yolo5.ipynb)
+- [학회 초록·포스터](https://app.notion.com/p/161e86771c198076b643f25abc351a3c)
+
+노트북 실행에는 별도의 열영상 데이터셋(`data.zip`)이 필요하며, 데이터와 학습 가중치는 이 저장소에 포함되어 있지 않습니다.
